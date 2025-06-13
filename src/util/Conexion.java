@@ -11,7 +11,7 @@ public class Conexion {
 	private static final String USER = "root";
 	private static final String PASSWORD = "";
 
-	public static void main(String[] args) {
+	public static Connection obtenerConexion() {
 
 		Connection conexion = null;
 
@@ -36,6 +36,6 @@ public class Conexion {
 				e.printStackTrace();
 			}
 		}
-
+		return conexion;
 	}
 }
