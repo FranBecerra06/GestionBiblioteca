@@ -1,15 +1,15 @@
 package dto;
 
 public class LibroDTO {
-
 	private int idLibro;
 	private String titulo;
+	private int idAutor;
 	private int anio;
 
-	public LibroDTO(int idLibro, String titulo, int anio) {
-
+	public LibroDTO(int idLibro, String titulo, int anio, int idAutor) {
 		this.idLibro = idLibro;
 		this.titulo = titulo;
+		this.idAutor = idAutor;
 		this.anio = anio;
 	}
 
@@ -21,24 +21,28 @@ public class LibroDTO {
 		this.idLibro = idLibro;
 	}
 
+	public String getTitulo() {
+		return titulo;
+	}
+
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
 	}
 
-	public void setAnio(int anio) {
-		this.anio = anio;
+	public int getIdAutor() {
+		return idAutor;
 	}
 
-	public String getTitulo() {
-		return titulo;
+	public void setIdAutor(int idAutor) {
+		this.idAutor = idAutor;
 	}
 
 	public int getAnio() {
 		return anio;
 	}
 
-	public String toString() {
-		return "LibroDTO [idLibro=" + idLibro + ", titulo=" + titulo + ", anio=" + anio + "]";
+	public void setAnio(int anio) {
+		this.anio = anio;
 	}
 
 }
