@@ -1,7 +1,6 @@
 package dto;
 
 public class AutorDTO {
-
 	private int idAutor;
 	private String nombre;
 	private String pais;
@@ -20,24 +19,19 @@ public class AutorDTO {
 		this.idAutor = idAutor;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public void setPais(String pais) {
-		this.pais = pais;
-	}
-
 	public String getNombre() {
 		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
 	public String getPais() {
 		return pais;
 	}
 
-	public String toString() {
-		return "AutorDTO idAutor=" + idAutor + ", nombre=" + nombre + ", pais=" + pais + "]";
+	public void setPais(String pais) {
+		this.pais = pais;
 	}
-
 }
