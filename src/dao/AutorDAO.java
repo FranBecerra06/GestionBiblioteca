@@ -4,114 +4,58 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import dto.AutorDTO;
-import util.Conexion;
+import dto.AutorDTO; // Importación de la clase DTO para manejar los datos de autores
+import util.Conexion; // Importación de la clase que gestiona la conexión con la base de datos
 
 public class AutorDAO {
 
-	// INSERTAR AUTOR
-
+	// Método para insertar un autor en la base de datos
 	public void insertarAutor(AutorDTO autor) {
+		String sql = "INSERT INTO autor (nombre, pais) VALUES (?, ?)"; // Sentencia SQL para insertar un autor
+		
+		try (Connection conexion = Conexion.obtenerConexion(); // Obtener conexión a la base de datos
+				PreparedStatement stmt = conexion.prepareStatement(sql)) { // Preparar la sentencia SQL
 
-		String sql = "INSERT INTO autor (id_autor, nombre, pais) VALUES (?, ?, ?)";
-
-		try (Connection conexion = Conexion.obtenerConexion();
-				PreparedStatement stmt = conexion.prepareStatement(sql)) {
-
+			// Asignar valores a los parámetros de la consulta
 			stmt.setString(1, autor.getNombre());
 			stmt.setString(2, autor.getPais());
-			stmt.setInt(3, autor.getIdAutor());
-			stmt.executeUpdate();
 
-			System.out.println("Autor creado correctamente.");
+			int filas = stmt.executeUpdate(); // Ejecutar la consulta y obtener número de filas afectadas
+
+			// Verificar si fue exitosa
+			if (filas > 0)
+				System.out.println("Autor insertado correctamente.");
+			else
+				System.out.println("No se pudo insertar el autor.");
 
 		} catch (SQLException e) {
-
-			System.out.println("Error al crear el autor.");
-			e.printStackTrace();
-
+			e.printStackTrace(); // Manejo de errores en caso de excepción SQL
 		}
-
 	}
 
-	// OBTENER LISTA AUTORES
-
+	// Método para obtener la lista de autores desde la base de datos
 	public List<AutorDTO> obtenerAutores() {
+		List<AutorDTO> listaAutores = new ArrayList<>(); // Lista para almacenar los autores obtenidos
+		String sql = "SELECT * FROM autor"; // Consulta SQL para obtener todos los autores
 
-		List<AutorDTO> listaAutor = new ArrayList<>();
+		try (Connection conexion = Conexion.obtenerConexion(); // Obtener conexión a la base de datos
+				PreparedStatement stmt = conexion.prepareStatement(sql); // Preparar la consulta SQL
+				ResultSet rs = stmt.executeQuery()) { // Ejecutar la consulta y obtener resultados
 
-		String sql = "SELECT * FROM autor";
-
-		try (Connection conexion = Conexion.obtenerConexion();
-				Statement stmt = conexion.createStatement();
-
-				ResultSet rs = stmt.executeQuery(sql)) {
-
+			// Iterar sobre el resultado y crear objetos AutorDTO
 			while (rs.next()) {
-
-				// ATRIBUTOS DE LAS TABLAS DE LA BD
-				listaAutor.add(new AutorDTO(rs.getInt("id_autor"), rs.getString("nombre"), rs.getString("pais")));
-
+				int id = rs.getInt("id_autor");
+				String nombre = rs.getString("nombre");
+				String pais = rs.getString("pais");
+				listaAutores.add(new AutorDTO(id, nombre, pais)); // Agregar el autor a la lista
 			}
 		} catch (SQLException e) {
-
-			e.printStackTrace();
-
+			System.out.println("Error al obtener autores.");
+			e.printStackTrace(); // Manejo de errores en caso de excepción SQL
 		}
-
-		return listaAutor;
-
+		return listaAutores; // Retornar la lista de autores obtenida
 	}
-
-	// ACTUALIZAR AUTORES
-
-	public void actualizarAutores(AutorDTO autor) {
-
-		String sql = "UPDATE autor SET nombre = ?, pais = ? WHERE idAutor = ?";
-
-		try (Connection conexion = Conexion.obtenerConexion();
-				PreparedStatement stmt = conexion.prepareStatement(sql)) {
-
-			stmt.setString(1, autor.getNombre());
-			stmt.setString(2, autor.getPais());
-			stmt.setInt(3, autor.getIdAutor());
-
-			stmt.executeUpdate();
-
-			System.out.println("Autor actualizado.");
-
-		} catch (SQLException e) {
-
-			System.out.println("Error al actualizar un autor");
-			e.printStackTrace();
-		}
-	}
-
-	// ELIMINAR AUTORES
-
-	public void eliminarAutores(int idAutor) {
-
-		String sql = "DELETE FROM autor WHERE id_autor = ?";
-
-		try (Connection conexion = Conexion.obtenerConexion();
-				PreparedStatement stmt = conexion.prepareStatement(sql)) {
-
-			stmt.setInt(1, idAutor);
-
-			stmt.executeUpdate();
-			System.out.println("Autor eliminado.");
-
-		} catch (SQLException e) {
-
-			System.out.println("Error al eliminar un autor.");
-
-			e.printStackTrace();
-
-		}
-
-	}
-
 }
