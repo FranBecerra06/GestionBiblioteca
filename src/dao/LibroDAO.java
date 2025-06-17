@@ -12,10 +12,11 @@ import util.Conexion; // Clase que maneja la conexión con la base de datos
 
 public class LibroDAO {
 
-	// Método para insertar un nuevo libro en la base de datos	
+	// Método para insertar un nuevo libro en la base de datos
 	public void insertarLibro(LibroDTO libro) {
-		String sql = "INSERT INTO libro (titulo, anio, id_autor) VALUES (?, ?, ?)"; // Consulta SQL para insertar un libro
-		
+		String sql = "INSERT INTO libro (titulo, anio, id_autor) VALUES (?, ?, ?)"; // Consulta SQL para insertar un
+																					// libro
+
 		try (Connection conexion = Conexion.obtenerConexion(); // Obtener conexión a la base de datos
 				PreparedStatement stmt = conexion.prepareStatement(sql)) { // Preparar la consulta SQL
 
@@ -27,10 +28,11 @@ public class LibroDAO {
 			int filas = stmt.executeUpdate(); // Ejecutar la consulta y obtener número de filas afectadas
 
 			// Verificar si la inserción fue exitosa
-			if (filas > 0)
+			if (filas > 0) {
 				System.out.println("Libro insertado correctamente.");
-			else
+			} else {
 				System.out.println("No se pudo insertar el libro.");
+			}
 		} catch (SQLException e) {
 			e.printStackTrace(); // Manejo de errores en caso de excepción SQL
 		}
@@ -63,7 +65,7 @@ public class LibroDAO {
 	// Método para modificar el título de un libro dado su id
 	public void modificarTituloLibro(int idLibro, String nuevoTitulo) {
 		String sql = "UPDATE libro SET titulo = ? WHERE id_libro = ?"; // Consulta SQL para actualizar el título
-		
+
 		try (Connection conexion = Conexion.obtenerConexion(); // Obtener conexión a la base de datos
 				PreparedStatement stmt = conexion.prepareStatement(sql)) { // Preparar la consulta SQL
 
@@ -86,7 +88,7 @@ public class LibroDAO {
 	// Método para eliminar un libro dado su id
 	public void eliminarLibro(int idLibro) {
 		String sql = "DELETE FROM libro WHERE id_libro = ?"; // Consulta SQL para eliminar un libro
-		
+
 		try (Connection conexion = Conexion.obtenerConexion(); // Obtener conexión a la base de datos
 				PreparedStatement stmt = conexion.prepareStatement(sql)) { // Preparar la consulta SQL
 
